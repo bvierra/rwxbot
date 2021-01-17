@@ -1,0 +1,11 @@
+# hubot-irc
+export HUBOT_IRC_NICK=RWXBot
+export HUBOT_IRC_SERVER=irc.freenode.net
+export HUBOT_IRC_ROOMS="##rwx.gg-offtopic"
+export HUBOT_IRC_UNFLOOD="true"
+export HUBOT_IRC_USESSL="true"
+export HUBOT_IRC_USESASL="true"
+
+# hubot-logger
+export IRCLOGS_PORT=3000 #or whatever port you want your node express app to listen on for serving archives of logs
+export IRCLOGS_FOLDER="/home/hubot/logs"
