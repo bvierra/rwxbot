@@ -3,3 +3,4 @@ script-pkg/**/node_modules
 .DS_Store*
 .hubot_history
 conf/secret
+conf/local
