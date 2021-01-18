@@ -30,4 +30,4 @@ source "${BASE_DIR}/conf/secret"
 # Make sure that the logs dir is create
 [[ -d "${IRCLOGS_FOLDER}" ]] || mkdir -p "${IRCLOGS_FOLDER}"
 
-exec node_modules/.bin/hubot --name "rwxbot" "${@}"
+exec node_modules/.bin/hubot --name "rwxbot" -a irc "${@}"
