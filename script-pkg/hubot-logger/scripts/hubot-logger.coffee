@@ -22,6 +22,7 @@
 #
 # Configuration:
 #   IRCLOGS_FOLDER
+#   IRCLOGS_URL
 #   HUBOT_LOGGER_HTTP_LOGIN
 #   HUBOT_LOGGER_HTTP_PASSWORD
 #
@@ -41,8 +42,11 @@ Tempus = require "tempus"
 mkdirp = require("mkdirp").sync
 bodyParser = require('body-parser')
 methodOverride = require('method-override')
+readLastLines = require('read-last-lines')
 
+numUrls = 5
 log_streams = {}
+
 
 log_message = (root, date, type, channel, meta) ->
   mkdirp(path.resolve root, channel)
@@ -188,17 +192,17 @@ module.exports = (robot) ->
     #robot.logger_app.use robot.logger_app.router
     #)
 
-    robot.logger_app.get "/irclogs", (req, res) ->
-      res.redirect "/irclogs/channels"
+    robot.logger_app.get "/logs", (req, res) ->
+      res.redirect "/logs/channels"
 
-    robot.logger_app.get "/irclogs/channels", (req, res) ->
+    robot.logger_app.get "/logs/channels", (req, res) ->
       files = fs.readdirSync(logs_root)
       res.render('channels.jade', {
         channels: files,
         title: 'channel index'
       })
 
-    robot.logger_app.get "/irclogs/:channel/index", (req, res) ->
+    robot.logger_app.get "/logs/:channel/index", (req, res) ->
       channel = req.params.channel
       fs.readdir logs_root + "/" + channel, (err, filenames) ->
         if err
@@ -214,7 +218,7 @@ module.exports = (robot) ->
           page: 'index'
         })
 
-    robot.logger_app.get "/irclogs/:channel/latest", (req, res) ->
+    robot.logger_app.get "/logs/:channel/latest", (req, res) ->
       channel = req.params.channel
       fs.readdir logs_root + "/" + channel, (err, filenames) ->
         if err
@@ -227,7 +231,7 @@ module.exports = (robot) ->
         date = dates[dates.length - 1]
         render_log(req, res, channel, path.resolve(logs_root, channel, date + ".txt"), date, dates, true)
 
-    robot.logger_app.get "/irclogs/:channel/urls", (req, res) ->
+    robot.logger_app.get "/logs/:channel/urls", (req, res) ->
       channel = req.params.channel
       channel.replace(/\..*$/, '')
       log_file = path.resolve(logs_root, channel, 'urls.txt')
@@ -236,10 +240,26 @@ module.exports = (robot) ->
         console.log("serving: "+log_file)
       else
         res.send channel + " does not have a urls file", 404
+      readLastLines.read(log_file, numUrls)
+	      .then((lines) => res.send(lines, 200));
 
-      res.sendFile(log_file)
+    robot.logger_app.get "/logs/:channel/urls/:count", (req, res) ->
+      channel = req.params.channel
+      channel.replace(/\..*$/, '')
+      log_file = path.resolve(logs_root, channel, 'urls.txt')
 
-    robot.logger_app.get "/irclogs/:channel/:date", (req, res) ->
+      urls = req.params.count
+      if ! Number.isInteger(urls)
+        urls = parseInt(urls, 10)
+
+      if fs.existsSync(log_file)
+        console.log("serving: "+log_file)
+      else
+        res.send channel + " does not have a urls file", 404
+      readLastLines.read(log_file, urls)
+	      .then((lines) => res.send(lines, 200));
+
+    robot.logger_app.get "/logs/:channel/:date", (req, res) ->
       channel = req.params.channel
       fs.readdir logs_root + "/" + channel, (err, filenames) ->
         if err
