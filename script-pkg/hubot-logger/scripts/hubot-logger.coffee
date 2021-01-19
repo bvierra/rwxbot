@@ -210,9 +210,10 @@ module.exports = (robot) ->
         if err
           res.send '' + err, 404
 
-        dates = filenames.map (filename) ->
-          filename.replace(/\..*$/, '')
-          filename.replace(/urls$/, '')
+        dates = filenames.reduce (res, filename) ->
+          if filename.search(/urls/) == -1
+            res.push filename.replace(/\..*$/, '')
+        , []
         dates.sort().reverse()
 
         res.render('index.jade', {
@@ -227,9 +228,10 @@ module.exports = (robot) ->
         if err
           res.send '' + err, 404
 
-        dates = filenames.map (filename) ->
-          filename.replace(/\..*$/, '')
-          filename.replace(/urls$/, '')
+        dates = filenames.reduce (res, filename) ->
+          if filename.search(/urls/) == -1
+            res.push filename.replace(/\..*$/, '')
+        , []
         dates.sort()
 
         date = dates[dates.length - 1]
@@ -269,10 +271,10 @@ module.exports = (robot) ->
         if err
           res.send '' + err, 404
 
-        dates = filenames.map (filename) ->
-          filename.replace(/\..*$/, '')
-          filename.replace(/urls$/, '')
-        dates.sort()
+        dates = filenames.reduce (res, filename) ->
+          if filename.search(/urls/) == -1
+            res.push filename.replace(/\..*$/, '')
+        , []
 
         date = req.params.date
         render_log(req, res, channel, path.resolve(logs_root, channel, date + ".txt"), date, dates, true)
