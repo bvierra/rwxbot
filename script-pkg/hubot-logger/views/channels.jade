@@ -5,11 +5,11 @@ block body
     ul
       - each channel in channels
         li
-          a(href= '/logs/' + encodeURI(channel) + '/latest') #{channel}
+          a(href= '/logs/' + encode(channel) + '/latest') #{channel}
           = ' ('
-          a(href= '/logs/' + encodeURI(channel) + '/index') index
+          a(href= '/logs/' + encode(channel) + '/index') index
           = ' | '
-          a(href= '/logs/' + encodeURI(channel) + '/latest') latest
+          a(href= '/logs/' + encode(channel) + '/latest') latest
           = ' | '
-          a(href= '/logs/' + encodeURI(channel) + '/urls') URLS
+          a(href= '/logs/' + encode(channel) + '/urls') URLS
           = ')'
