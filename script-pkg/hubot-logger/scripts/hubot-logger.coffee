@@ -211,6 +211,7 @@ module.exports = (robot) ->
           res.send '' + err, 404
 
         dates = filenames.map (filename) ->
+          filename.replace(/urls\.txt)$/, '')
           filename.replace(/\..*$/, '')
         dates.sort().reverse()
 
