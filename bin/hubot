@@ -2,6 +2,9 @@
 
 set -e
 
+ADAPTER="${ADAPTER:-irc}"
+SU="${SU:-0}"
+
 RESET='\033[0m'
 RED='\033[38;5;1m'
 
@@ -14,9 +17,11 @@ exmsg() {
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 BASE_DIR="${SCRIPT_DIR}/.."
 
-cd "${BASE_DIR}"
-git pull
-npm install
+if [[ ${SU} == 0 ]]; then
+  cd "${BASE_DIR}"
+  git pull
+  npm install
+fi
 export PATH="node_modules/.bin:node_modules/hubot/node_modules/.bin:$PATH"
 
 [[ -f "${BASE_DIR}/conf/env" ]] || exmsg "Missing ${BASE_DIR}/conf/env"
@@ -27,8 +32,7 @@ source "${BASE_DIR}/conf/env"
 # shellcheck disable=1090
 source "${BASE_DIR}/conf/secret"
 
-if [[ -f "${BASE_DIR}/conf/local" ]];
-then
+if [[ -f "${BASE_DIR}/conf/local" ]]; then
   # shellcheck disable=1090
   source "${BASE_DIR}/conf/local"
 fi
@@ -36,4 +40,4 @@ fi
 # Make sure that the logs dir is create
 [[ -d "${IRCLOGS_FOLDER}" ]] || mkdir -p "${IRCLOGS_FOLDER}"
 
-exec node_modules/.bin/hubot --name "rwxbot" -a irc "${@}"
+exec node_modules/.bin/hubot --name "rwxbot" -a "${ADAPTER}" "${@}"

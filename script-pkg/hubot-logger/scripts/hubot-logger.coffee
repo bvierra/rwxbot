@@ -47,6 +47,8 @@ readLastLines = require('read-last-lines')
 numUrls = 5
 log_streams = {}
 
+compact = (array) ->
+  item for item in array when item
 
 log_message = (root, date, type, channel, meta) ->
   #channelp = (channel + '').replace /#/, "_"
@@ -210,10 +212,13 @@ module.exports = (robot) ->
         if err
           res.send '' + err, 404
 
-        dates = filenames.reduce (result, filename) ->
-          if filename.search(/urls/) == -1
-            result.push filename.replace(/\..*$/, '')
-        , []
+        dates = filenames.map (filename) ->
+          urls_regex = /urls\.txt/gi
+          if filename.search(urls_regex) >= 0
+            return null
+          console.log "adding "+filename
+          return filename.replace(/\..*$/, '')
+        dates = compact dates
         dates.sort().reverse()
 
         res.render('index.jade', {
@@ -227,11 +232,12 @@ module.exports = (robot) ->
       fs.readdir logs_root + "/" + channel, (err, filenames) ->
         if err
           res.send '' + err, 404
-
-        dates = filenames.reduce (result, filename) ->
-          if filename.search(/urls/) == -1
-            result.push filename.replace(/\..*$/, '')
-        , []
+        urls_regex = /urls\.txt/gi
+        dates = filenames.map (filename) ->
+          if filename.search(urls_regex)
+            return null
+          return filename.replace(/\..*$/, '')
+        dates = compact dates
         dates.sort()
 
         date = dates[dates.length - 1]
@@ -246,8 +252,7 @@ module.exports = (robot) ->
         console.log("serving: "+log_file)
       else
         res.send channel + " does not have a urls file", 404
-      readLastLines.read(log_file, numUrls)
-	      .then((lines) => res.send(lines));
+      readLastLines.read(log_file, numUrls).then((lines) => res.send(lines));
 
     robot.logger_app.get "/logs/:channel/urls/:count", (req, res) ->
       channel = req.params.channel
@@ -262,8 +267,7 @@ module.exports = (robot) ->
         console.log("serving: "+log_file)
       else
         res.send channel + " does not have a urls file", 404
-      readLastLines.read(log_file, urls)
-	      .then((lines) => res.send(lines));
+      readLastLines.read(log_file, urls).then((lines) => res.send(lines));
 
     robot.logger_app.get "/logs/:channel/:date", (req, res) ->
       channel = req.params.channel
@@ -271,10 +275,14 @@ module.exports = (robot) ->
         if err
           res.send '' + err, 404
 
-        dates = filenames.reduce (result, filename) ->
-          if filename.search(/urls/) == -1
-            result.push filename.replace(/\..*$/, '')
-        , []
+        dates = filenames.map (filename) ->
+          urls_regex = /urls\.txt/gi
+          if filename.search(urls_regex)
+            console.log "skipping "+filename
+            return null
+          console.log "adding "+filename
+          return filename.replace(/\..*$/, '')
+        dates = compact dates
 
         date = req.params.date
         render_log(req, res, channel, path.resolve(logs_root, channel, date + ".txt"), date, dates, true)
