@@ -49,6 +49,7 @@ log_streams = {}
 
 
 log_message = (root, date, type, channel, meta) ->
+  #channelp = (channel + '').replace /#/, "_"
   mkdirp(path.resolve root, channel)
   log_file = path.resolve root, channel, date.toString("%Y-%m-%d") + '.txt'
   meta.date = date
@@ -141,11 +142,12 @@ module.exports = (robot) ->
 
     robot.adapter.bot.on 'message', (nick, to, text, message) ->
       URL_REGEXP = /((?:https?):\/\/[^\s$.?#].[^\s]*)/i
+      channel = (to + '')
       result = (text + '').match(/^\x01ACTION (.*)\x01$/)
       if !result
         res = (text + '').match(URL_REGEXP)
         if res
-          log_file = path.resolve logs_root, to, 'urls.txt'
+          log_file = path.resolve logs_root, channel, 'urls.txt'
           fs.appendFile log_file, res[0] + '\n', (err) ->
             if err
               throw err
