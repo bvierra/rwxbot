@@ -241,7 +241,7 @@ module.exports = (robot) ->
       else
         res.send channel + " does not have a urls file", 404
       readLastLines.read(log_file, numUrls)
-	      .then((lines) => res.send(200).send(lines);
+	      .then((lines) => res.send(200).send(lines));
 
     robot.logger_app.get "/logs/:channel/urls/:count", (req, res) ->
       channel = req.params.channel
