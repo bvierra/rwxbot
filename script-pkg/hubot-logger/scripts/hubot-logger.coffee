@@ -211,8 +211,8 @@ module.exports = (robot) ->
           res.send '' + err, 404
 
         dates = filenames.map (filename) ->
-          filename.replace(/urls\.txt)$/, '')
           filename.replace(/\..*$/, '')
+          filename.replace(/urls$/, '')
         dates.sort().reverse()
 
         res.render('index.jade', {
@@ -229,6 +229,7 @@ module.exports = (robot) ->
 
         dates = filenames.map (filename) ->
           filename.replace(/\..*$/, '')
+          filename.replace(/urls$/, '')
         dates.sort()
 
         date = dates[dates.length - 1]
@@ -270,6 +271,7 @@ module.exports = (robot) ->
 
         dates = filenames.map (filename) ->
           filename.replace(/\..*$/, '')
+          filename.replace(/urls$/, '')
         dates.sort()
 
         date = req.params.date
