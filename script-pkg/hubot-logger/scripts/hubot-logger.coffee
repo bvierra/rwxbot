@@ -124,9 +124,9 @@ render_log = (req, res, channel, file, date, dates, latest) ->
 
 module.exports = (robot) ->
     # init logging
-    util.puts(util.inspect(robot))
-    util.puts(util.inspect(robot.adapter.bot))
-    util.puts(util.inspect(robot.adapter.bot.opt.channels))
+    #util.puts(util.inspect(robot))
+    #util.puts(util.inspect(robot.adapter.bot))
+    #util.puts(util.inspect(robot.adapter.bot.opt.channels))
     logs_root = process.env.IRCLOGS_FOLDER || "/var/irclogs/logs"
     mkdirp(logs_root)
 
