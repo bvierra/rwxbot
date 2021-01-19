@@ -210,9 +210,9 @@ module.exports = (robot) ->
         if err
           res.send '' + err, 404
 
-        dates = filenames.reduce (res, filename) ->
+        dates = filenames.reduce (result, filename) ->
           if filename.search(/urls/) == -1
-            res.push filename.replace(/\..*$/, '')
+            result.push filename.replace(/\..*$/, '')
         , []
         dates.sort().reverse()
 
@@ -228,9 +228,9 @@ module.exports = (robot) ->
         if err
           res.send '' + err, 404
 
-        dates = filenames.reduce (res, filename) ->
+        dates = filenames.reduce (result, filename) ->
           if filename.search(/urls/) == -1
-            res.push filename.replace(/\..*$/, '')
+            result.push filename.replace(/\..*$/, '')
         , []
         dates.sort()
 
@@ -271,9 +271,9 @@ module.exports = (robot) ->
         if err
           res.send '' + err, 404
 
-        dates = filenames.reduce (res, filename) ->
+        dates = filenames.reduce (result, filename) ->
           if filename.search(/urls/) == -1
-            res.push filename.replace(/\..*$/, '')
+            result.push filename.replace(/\..*$/, '')
         , []
 
         date = req.params.date
