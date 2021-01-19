@@ -234,7 +234,7 @@ module.exports = (robot) ->
           res.send '' + err, 404
         urls_regex = /urls\.txt/gi
         dates = filenames.map (filename) ->
-          if filename.search(urls_regex)
+          if filename.search(urls_regex) >= 0
             return null
           return filename.replace(/\..*$/, '')
         dates = compact dates
@@ -242,6 +242,28 @@ module.exports = (robot) ->
 
         date = dates[dates.length - 1]
         render_log(req, res, channel, path.resolve(logs_root, channel, date + ".txt"), date, dates, true)
+
+    robot.logger_app.get "/logs/:channel/latest/raw", (req, res) ->
+      channel = req.params.channel
+      fs.readdir logs_root + "/" + channel, (err, filenames) ->
+        if err
+          res.send '' + err, 404
+        urls_regex = /urls\.txt/gi
+        dates = filenames.map (filename) ->
+          if filename.search(urls_regex) >= 0
+            return null
+          return filename.replace(/\..*$/, '')
+        dates = compact dates
+        dates.sort()
+        date = dates[dates.length - 1]
+
+        options = {
+          root: path.join(logs_root, channel),
+          dotfiles: 'deny'
+        }
+        res.sendFile "./"+date+".txt", options
+
+
 
     robot.logger_app.get "/logs/:channel/urls", (req, res) ->
       channel = req.params.channel
@@ -277,7 +299,7 @@ module.exports = (robot) ->
 
         dates = filenames.map (filename) ->
           urls_regex = /urls\.txt/gi
-          if filename.search(urls_regex)
+          if filename.search(urls_regex) >= 0
             console.log "skipping "+filename
             return null
           console.log "adding "+filename
