@@ -5,6 +5,5 @@
   "hubot-auth",
   "hubot-google-translate",
   "hubot-logger",
-//  "hubot-packt-free-book",
   "hubot-factoids"
 ]

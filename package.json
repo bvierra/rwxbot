@@ -17,7 +17,6 @@
     "hubot-irc": "^0.4.2",
     "hubot-logger": "file:script-pkg/hubot-logger",
     "hubot-maps": "0.0.3",
-    "hubot-packt-free-book": "0.0.2",
     "hubot-pugme": "^0.1.1",
     "hubot-redis-brain": "^1.0.0",
     "hubot-rules": "^1.0.0"
