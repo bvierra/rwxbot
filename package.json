@@ -7,14 +7,17 @@
   "dependencies": {
     "express": "^4.17.1",
     "hubot": "^3.3.2",
+    "hubot-auth": "^2.1.0",
     "hubot-brain-redis-hash": "^0.3.0",
     "hubot-diagnostics": "^1.0.0",
+    "hubot-factoids": "^1.2.0",
     "hubot-google-images": "^0.2.7",
     "hubot-google-translate": "^0.2.1",
     "hubot-help": "^1.0.1",
     "hubot-irc": "^0.4.2",
     "hubot-logger": "file:script-pkg/hubot-logger",
     "hubot-maps": "0.0.3",
+    "hubot-packt-free-book": "0.0.2",
     "hubot-pugme": "^0.1.1",
     "hubot-redis-brain": "^1.0.0",
     "hubot-rules": "^1.0.0"

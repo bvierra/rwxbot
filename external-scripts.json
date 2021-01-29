@@ -2,6 +2,9 @@
   "hubot-brain-redis-hash",
   "hubot-diagnostics",
   "hubot-help",
+  "hubot-auth",
   "hubot-google-translate",
-  "hubot-logger"
+  "hubot-logger",
+  "hubot-packt-free-book",
+  "hubot-factoids"
 ]
