@@ -7,7 +7,7 @@ export HUBOT_IRC_UNFLOOD="true"
 export HUBOT_IRC_USESSL="true"
 #export HUBOT_IRC_USESASL="false"
 export HUBOT_IRC_PORT=6697
-export HUBOT_AUTH_ADMIN=""
+export HUBOT_AUTH_ADMIN="bvierra"
 
 # hubot-logger
 export IRCLOGS_PORT=3000 #or whatever port you want your node express app to listen on for serving archives of logs
